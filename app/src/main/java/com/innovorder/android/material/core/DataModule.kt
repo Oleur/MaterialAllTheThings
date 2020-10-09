@@ -1,24 +1,22 @@
 package com.innovorder.android.material.core
 
 import com.innovorder.android.material.data.remote.service.SwapiService
-import com.squareup.moshi.Moshi
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
 object DataModule {
-
-    @Provides
-    @Singleton
-    fun provideMoshi() = Moshi.Builder().build()
 
     @Provides
     @Singleton
@@ -33,17 +31,19 @@ object DataModule {
             .addInterceptor(httpLoggingInterceptor)
             .build()
 
+    private val contentType = "application/json".toMediaType()
+
+    @ExperimentalSerializationApi
     @Provides
     @Singleton
-    fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl("https://swapi.dev/")
         .client(okHttpClient)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType))
         .build()
 
     @Provides
     @Singleton
     fun provideSwapiService(retrofit: Retrofit): SwapiService =
         retrofit.create(SwapiService::class.java)
-
 }

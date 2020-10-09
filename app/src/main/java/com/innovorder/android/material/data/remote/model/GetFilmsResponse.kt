@@ -1,14 +1,11 @@
 package com.innovorder.android.material.data.remote.model
 
-import android.os.Parcelable
-import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
-@JsonClass(generateAdapter = true)
+@Serializable
 data class GetFilmsResponse(
     val count: Int,
     val next: Int?,
     val previous: Int?,
     val results: List<Film>
-) : Parcelable
+)
