@@ -1,4 +1,4 @@
-package com.innovorder.android.material.ui
+package com.innovorder.android.material.ui.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.innovorder.android.material.databinding.ItemMainBinding
 import com.innovorder.android.material.domain.entity.FilmEntity
 
-class MainAdapter : ListAdapter<FilmEntity, MainAdapter.MainViewHolder>(POST_COMPARATOR) {
+class MoviesAdapter : ListAdapter<FilmEntity, MoviesAdapter.MainViewHolder>(POST_COMPARATOR) {
 
     companion object {
         val POST_COMPARATOR = object : DiffUtil.ItemCallback<FilmEntity>() {

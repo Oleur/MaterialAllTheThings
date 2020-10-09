@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Material.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="shapeAppearance">@style/ShapeAppearance.Material.MediumComponent</item>
+        <item name="boxBackgroundColor">@color/transparent</item>
+        <item name="hintTextAppearance">@style/TextAppearance.Material.Caption</item>
+    </style>
+
+</resources>

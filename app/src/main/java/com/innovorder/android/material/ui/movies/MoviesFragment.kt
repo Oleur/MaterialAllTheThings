@@ -1,4 +1,4 @@
-package com.innovorder.android.material.ui
+package com.innovorder.android.material.ui.movies
 
 import android.os.Bundle
 import android.util.Log
@@ -10,22 +10,26 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.innovorder.android.material.core.transition.SpringAddItemAnimator
 import com.innovorder.android.material.databinding.FragmentMainBinding
+import com.innovorder.android.material.ui.Empty
+import com.innovorder.android.material.ui.Error
+import com.innovorder.android.material.ui.Success
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
-class MainFragment : Fragment() {
+class MoviesFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding
         get() = _binding!!
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MoviesViewModel by viewModels()
 
-    private lateinit var mainAdapter: MainAdapter
+    private lateinit var moviesAdapter: MoviesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,20 +43,20 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initList()
 
         lifecycleScope.launchWhenResumed {
-            viewModel.getFilms()
-
-            viewModel.state.collect { state ->
-                when (state) {
-                    Empty -> applyEmptyState()
-                    is Success -> applySuccessState(state.data)
-                    is Error -> applyErrorState(state.exception)
+            with(viewModel) {
+                getFilms()
+                state.collect { state ->
+                    when (state) {
+                        Empty -> applyEmptyState()
+                        is Success -> applySuccessState(state.data)
+                        is Error -> applyErrorState(state.exception)
+                    }
                 }
             }
         }
-        initList()
-
     }
 
     override fun onDestroyView() {
@@ -61,10 +65,11 @@ class MainFragment : Fragment() {
     }
 
     private fun initList() {
-        mainAdapter = MainAdapter()
+        moviesAdapter = MoviesAdapter()
         with(binding.list) {
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-            adapter = mainAdapter
+            adapter = moviesAdapter
+            itemAnimator = SpringAddItemAnimator()
         }
     }
 
@@ -72,12 +77,12 @@ class MainFragment : Fragment() {
         Log.w("MainFragment", "Null value")
     }
 
-    private fun applySuccessState(mainModel: MainModel) {
-        mainAdapter.submitList(mainModel.films)
+    private fun applySuccessState(moviesModel: MoviesModel) {
+        moviesAdapter.submitList(moviesModel.films)
     }
 
     private fun applyErrorState(exception: Throwable) {
         Log.e("MainFragment", exception.message, exception)
     }
-    
+
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.innovorder.android.material.ui.MainFragment"
+        android:name="com.innovorder.android.material.ui.movies.MoviesFragment"
         android:label="MainFragment"
         tools:layout="@layout/fragment_main" />
 
