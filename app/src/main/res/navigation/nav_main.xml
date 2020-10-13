@@ -19,7 +19,9 @@
                 android:name="filmId"
                 android:defaultValue="1"
                 app:argType="integer" />
+
         </action>
+
     </fragment>
 
     <fragment
@@ -32,6 +34,7 @@
             android:name="filmId"
             android:defaultValue="1"
             app:argType="integer" />
+
     </fragment>
 
 </navigation>
