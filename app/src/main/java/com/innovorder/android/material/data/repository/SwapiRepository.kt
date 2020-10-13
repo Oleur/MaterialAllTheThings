@@ -19,4 +19,8 @@ class SwapiRepository @Inject constructor(
         emit(films.map(Film::toFilmEntity))
     }.flowOn(Dispatchers.IO)
 
+    fun getFilm(filmId: Int): Flow<FilmEntity> = flow {
+        emit(remote.getFilm(filmId).toFilmEntity())
+    }.flowOn(Dispatchers.IO)
+
 }

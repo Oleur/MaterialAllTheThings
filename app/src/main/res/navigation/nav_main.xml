@@ -9,6 +9,29 @@
         android:id="@+id/mainFragment"
         android:name="com.innovorder.android.material.ui.movies.MoviesFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_mainFragment_to_movieFragment"
+            app:destination="@id/movieFragment">
+
+            <argument
+                android:name="filmId"
+                android:defaultValue="1"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieFragment"
+        android:name="com.innovorder.android.material.ui.movie.MovieFragment"
+        android:label="MovieFragment"
+        tools:layout="@layout/fragment_movie">
+
+        <argument
+            android:name="filmId"
+            android:defaultValue="1"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

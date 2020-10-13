@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:transitionName="container">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,9 +16,12 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/backdrop"
             android:layout_width="match_parent"
-            android:layout_height="194dp"
+            android:layout_height="200dp"
+            android:foreground="@drawable/fg_backdrop_gradient"
             android:scaleType="centerCrop"
+            android:transitionName="@string/transition_backdrop"
             app:srcCompat="@drawable/ic_launcher_background" />
 
         <LinearLayout
@@ -31,15 +35,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceHeadline6"
+                android:transitionName="@string/transition_title"
                 tools:text="Title" />
 
             <TextView
+                android:id="@+id/director"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/spacing_small"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
-                tools:text="Description" />
+                tools:text="By Georges Lucas" />
 
         </LinearLayout>
 

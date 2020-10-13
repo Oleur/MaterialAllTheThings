@@ -10,4 +10,6 @@ class GetFilmsUseCase @Inject constructor(
 ) {
 
     fun getFilms(): Flow<List<FilmEntity>> = swapiRepository.getFilms()
+
+    fun getFilm(filmId: Int): Flow<FilmEntity> = swapiRepository.getFilm(filmId)
 }

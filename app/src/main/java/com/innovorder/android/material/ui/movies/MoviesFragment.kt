@@ -5,11 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.Hold
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
+import com.innovorder.android.material.R
 import com.innovorder.android.material.core.transition.SpringAddItemAnimator
 import com.innovorder.android.material.databinding.FragmentMainBinding
 import com.innovorder.android.material.ui.Empty
@@ -18,6 +26,7 @@ import com.innovorder.android.material.ui.Success
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
@@ -31,6 +40,12 @@ class MoviesFragment : Fragment() {
 
     private lateinit var moviesAdapter: MoviesAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        reenterTransition = MaterialElevationScale(true)
+        exitTransition = MaterialElevationScale(false)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,9 +58,12 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         initList()
 
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.launch {
             with(viewModel) {
                 getFilms()
                 state.collect { state ->
@@ -65,7 +83,9 @@ class MoviesFragment : Fragment() {
     }
 
     private fun initList() {
-        moviesAdapter = MoviesAdapter()
+        moviesAdapter = MoviesAdapter { list, filmId ->
+            navigateToMovie(list, filmId)
+        }
         with(binding.list) {
             addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
             adapter = moviesAdapter
@@ -83,6 +103,11 @@ class MoviesFragment : Fragment() {
 
     private fun applyErrorState(exception: Throwable) {
         Log.e("MainFragment", exception.message, exception)
+    }
+
+    private fun navigateToMovie(list: List<Pair<View, String>>, filmId: Int) {
+        val extras = FragmentNavigatorExtras(*list.toTypedArray())
+        findNavController().navigate(R.id.action_mainFragment_to_movieFragment, bundleOf("filmId" to filmId), null, extras)
     }
 
 }

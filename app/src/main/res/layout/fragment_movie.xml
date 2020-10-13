@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/spacing_medium">
+
+            <ImageView
+                android:id="@+id/backdrop"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#e5e5e5"
+                android:contentDescription="TODO"
+                android:foreground="@drawable/fg_backdrop_gradient"
+                android:scaleType="centerCrop"
+                android:transitionName="@string/transition_backdrop"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/starwars_backdrop_3"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/poster"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/spacing_medium"
+                android:background="@color/black"
+                android:elevation="@dimen/elevation_medium"
+                android:scaleType="centerCrop"
+                android:scaleX="0"
+                android:scaleY="0"
+                android:alpha="0"
+                app:layout_constraintBottom_toBottomOf="@+id/backdrop"
+                app:layout_constraintDimensionRatio="3:4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/backdrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material.CornerCut"
+                tools:src="@drawable/starwars_poster_3" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_small"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textColor="@color/white"
+                android:transitionName="@string/transition_title"
+                app:layout_constraintBottom_toBottomOf="@+id/backdrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/poster"
+                tools:text="Star Wars Episode III - The Revenge of the Sith"/>
+
+            <TextView
+                android:id="@+id/openingCrawl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.Material.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/poster"
+                tools:text="It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy...."/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>
