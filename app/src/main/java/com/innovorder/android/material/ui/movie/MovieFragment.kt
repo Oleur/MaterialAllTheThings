@@ -1,15 +1,18 @@
 package com.innovorder.android.material.ui.movie
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.transition.TransitionInflater
+import com.google.android.material.transition.MaterialContainerTransform
 import com.innovorder.android.material.R
 import com.innovorder.android.material.databinding.FragmentMovieBinding
 import com.innovorder.android.material.domain.entity.FilmEntity
@@ -37,9 +40,14 @@ class MovieFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postponeEnterTransition()
-        sharedElementEnterTransition = TransitionInflater
-            .from(context)
-            .inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = 1000L
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+            interpolator = DecelerateInterpolator()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(Color.TRANSPARENT)
+        }
     }
 
     override fun onCreateView(
@@ -54,12 +62,15 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val filmId = fragmentArgs.filmId
-        binding.cover.transitionName = filmId.toString()
+        val film = fragmentArgs.film
+        binding.backdrop.transitionName = film.episodeId.toString()
+        binding.title.transitionName = film.title
+
+        binding.title.text = film.title
 
         Picasso.get()
-            .load(getBackdrop(filmId))
-            .into(binding.cover, object : Callback {
+            .load(getBackdrop(film.episodeId))
+            .into(binding.backdrop, object : Callback {
                 override fun onSuccess() {
                     startPostponedEnterTransition()
                 }
@@ -69,10 +80,9 @@ class MovieFragment : Fragment() {
                 }
             })
 
-
         lifecycleScope.launch {
             with(viewModel) {
-                getFilm(filmId)
+                getFilm(getId(film.episodeId))
                 state.collect { state ->
                     when (state) {
                         Empty -> applyEmptyState()
@@ -82,6 +92,15 @@ class MovieFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getId(episodeId: Int) = when(episodeId) {
+        1 -> 4
+        2 -> 5
+        3 -> 6
+        4 -> 1
+        5 -> 2
+        else -> 3
     }
 
     override fun onDestroyView() {
@@ -97,10 +116,25 @@ class MovieFragment : Fragment() {
         with(binding) {
             title.text = movie.title
             openingCrawl.text = movie.openingCrawl
-            backdrop.setImageResource(getBackdrop(movie.episodeId))
 
+            Picasso.get()
+                .load(getPoster(movie.episodeId))
+                .into(binding.cover, object : Callback {
+                    override fun onSuccess() {
+                        animateCover()
+                    }
 
+                    override fun onError(e: Exception?) {
+                        animateCover()
+                    }
+                })
         }
+    }
+
+    private fun animateCover() {
+        binding.cover.animate().scaleX(1f).scaleY(1f).alpha(1f)
+            .setDuration(300).setInterpolator(DecelerateInterpolator()).setStartDelay(500).start()
+        binding.cover.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun applyErrorState(exception: Throwable) {
@@ -124,5 +158,4 @@ class MovieFragment : Fragment() {
         5 -> R.drawable.starwars_backdrop_5
         else -> R.drawable.starwars_backdrop_6
     }
-
 }

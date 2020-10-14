@@ -13,7 +13,8 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/spacing_medium">
+            android:paddingBottom="@dimen/spacing_medium"
+            android:transitionGroup="true">
 
             <ImageView
                 android:id="@+id/backdrop"
@@ -23,7 +24,6 @@
                 android:contentDescription="TODO"
                 android:foreground="@drawable/fg_backdrop_gradient"
                 android:scaleType="centerCrop"
-                android:transitionName="@string/transition_backdrop"
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +35,12 @@
                 android:layout_width="100dp"
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/spacing_medium"
+                android:alpha="0"
                 android:background="@color/black"
                 android:elevation="@dimen/elevation_medium"
                 android:scaleType="centerCrop"
+                android:scaleX="0"
+                android:scaleY="0"
                 app:layout_constraintBottom_toBottomOf="@+id/backdrop"
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +55,6 @@
                 android:layout_margin="@dimen/spacing_small"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@color/white"
-                android:transitionName="@string/transition_title"
                 app:layout_constraintBottom_toBottomOf="@+id/backdrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cover"

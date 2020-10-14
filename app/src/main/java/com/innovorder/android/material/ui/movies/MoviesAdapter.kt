@@ -1,8 +1,8 @@
 package com.innovorder.android.material.ui.movies
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +12,7 @@ import com.innovorder.android.material.domain.entity.FilmEntity
 import com.squareup.picasso.Picasso
 
 class MoviesAdapter(
-    private val callback: (movie: FilmEntity, cover: ImageView) -> Unit
+    private val callback: (movie: FilmEntity, cover: View, title: View) -> Unit
 ) : ListAdapter<FilmEntity, MoviesAdapter.MainViewHolder>(POST_COMPARATOR) {
 
     companion object {
@@ -41,7 +41,7 @@ class MoviesAdapter(
 
     class MainViewHolder(
         private val binding: ItemMainBinding,
-        private val callback: (movie: FilmEntity, cover: ImageView) -> Unit
+        private val callback: (movie: FilmEntity, cover: View, title: View) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: FilmEntity) {
@@ -51,10 +51,12 @@ class MoviesAdapter(
                 Picasso.get()
                     .load(getBackdrop(item.episodeId))
                     .fit()
+                    .centerCrop()
                     .into(cover)
 
                 cover.transitionName = item.episodeId.toString()
-                root.setOnClickListener { callback(item, cover) }
+                name.transitionName = item.title
+                root.setOnClickListener { callback(item, cover, name) }
             }
         }
 

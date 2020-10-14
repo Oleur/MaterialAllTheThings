@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -39,8 +38,12 @@ class MoviesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        reenterTransition = MaterialElevationScale(true)
-        exitTransition = MaterialElevationScale(false)
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = 300L
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = 300L
+        }
     }
 
     override fun onCreateView(
@@ -97,9 +100,9 @@ class MoviesFragment : Fragment() {
         Log.e("MainFragment", exception.message, exception)
     }
 
-    private fun navigateToMovie(film: FilmEntity, cover: ImageView) {
-        val extras = FragmentNavigatorExtras(cover to film.episodeId.toString())
-        val action = MoviesFragmentDirections.actionMainFragmentToMovieFragment(film.episodeId)
+    private fun navigateToMovie(film: FilmEntity, cover: View, title: View) {
+        val extras = FragmentNavigatorExtras(cover to film.episodeId.toString(), title to film.title)
+        val action = MoviesFragmentDirections.actionMainFragmentToMovieFragment(film)
         findNavController().navigate(action, extras)
     }
 

@@ -16,9 +16,8 @@
             app:destination="@id/movieFragment">
 
             <argument
-                android:name="filmId"
-                android:defaultValue="1"
-                app:argType="integer" />
+                android:name="film"
+                app:argType="com.innovorder.android.material.domain.entity.FilmEntity" />
 
         </action>
 
@@ -31,9 +30,8 @@
         tools:layout="@layout/fragment_movie">
 
         <argument
-            android:name="filmId"
-            android:defaultValue="1"
-            app:argType="integer" />
+            android:name="film"
+            app:argType="com.innovorder.android.material.domain.entity.FilmEntity" />
 
     </fragment>
 

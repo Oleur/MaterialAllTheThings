@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
     android:layout_width="match_parent"
@@ -20,8 +19,7 @@
             android:layout_height="200dp"
             android:foreground="@drawable/fg_backdrop_gradient"
             android:scaleType="centerCrop"
-            android:transitionName="@string/transition_backdrop"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            tools:srcCompat="@drawable/ic_launcher_background" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:transitionName="@string/transition_title"
                 tools:text="Title" />
 
             <TextView
